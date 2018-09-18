@@ -1,0 +1,5 @@
+name: frewen
+age: 21
+user: {"name":"frewen","age":21,"qq":"2622860598"}
+qq: 2622860598
+qq: 2622860598
