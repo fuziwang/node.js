@@ -18,6 +18,7 @@ switch(process.platform){
     file = __dirname + "\\view\\base.html";
     break;
   default:
+
     file = "error";
 }
 

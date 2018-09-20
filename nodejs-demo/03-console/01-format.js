@@ -21,3 +21,5 @@ log("qq: " + user.qq);
 //method3
 
 log(`qq: ${user.qq}`);
+
+console.error('Error:something Error');
