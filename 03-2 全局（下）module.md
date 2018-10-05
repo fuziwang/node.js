@@ -158,6 +158,86 @@ log(circle.circumference(20));
 log(circle.area(20));
 ```
 
+##### 使用全局对象 global
+
+- 在 03-global.js 定义模块级变量 pi, 函数 circle 以及对象字面量 objCircle
+- 编写 03-main.js 脚本，导入 03-global.js 脚本
+- 使用 03-global.js 脚本中的变量、函数和对象
+- 运行 03-main.js，观察程序结果，理解程序出错的原因
+- 修改 03-global.js 脚本，将变量、函数和对象定义为全局的
+- 运行 03-main.js 脚本，观察程序结果，理解程序工作原因
+
+```javascript
+#!/usr/bin/node
+// 03-global.js
+global.pi = Math.PI;
+
+global.circle = (radius)=>{
+  return {
+    circumference:function(){return 2*Math.PI*radius;},
+    area:function(){return Math.PI*radius*radius;}
+  }
+}
+
+global.circleobj = {
+  circumference:function(radius){return 2*Math.PI.radius},
+  area:function(radius){return Math.PI*radius*radius}
+}
+```
+
+```javascript
+#!/usr/bin/node
+// 03-main.js
+require('./03-global.js');
+console.log(global.pi);
+console.log(global.circle(20).circumference());
+console.log(global.circleobj.area(20));
+```
+
+##### 使用模块级变量在对象间共享信息
+
+- 编写 04-share.js 脚本，定义模块级变量 count，定义构造函数 Num
+- Num 有两个公开方法：add 让 count 加一，getCount 得到 count 的值
+- 导出构造函数 Num
+- 编写 04-main.js 脚本，导入 Num 构造函数
+- 用 Num 实例化 n1 和 n2 两个对象
+- n1.add() 方法调用两次，控制台打印 n1.getCount() 和 n2.getCount()
+- n2.add() 方法调用一次，控制台打印 n1.getCount() 和 n2.getCount()
+- 运行 04-main.js 程序，观察程序运行结果，理解程序工作原理
+
+```javascript
+#!/usr/bin/node
+// 04-share.js
+var count = 0;
+function Num(){
+  this.add = ()=>{count++;}
+  this.getcount = ()=>{console.log(count);};
+}
+
+module.exports = Num;
+```
+
+```javascript
+#!/usr/bin/node
+// 04-main.js
+var Num = require('./04-share.js');
+var n1 = new Num();
+var n2 = new Num();
+
+n1.add();
+n1.add();
+n1.getcount();
+n2.getcount();
+n2.add();
+n1.getcount();
+n2.getcount();
+## 输出结果
+2
+2
+3
+3
+```
+
 ##### npm模块的目录结构和程序结构
 
 ![目录结构](images/13.png)
