@@ -1,17 +1,20 @@
 #!/usr/bin/node
 
-const stdin = process.stdin;
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
 
-stdin.resume();
-stdin.setEncoding('utf-8');
+process.stdin.on('data',(data)=>{
+    process.stdout.write(data.toUpperCase());
 
-stdin.on('data',(data)=>{
-  process.stdout.write(data.toUpperCase());
-})
+});
 
-global.setTimeout(()=>{
-  stdin.removeAllListeners();
-},3000);
-stdin.on('end',()=>{
-  process.exit();
+/*
+ * global.setTimeout(()=>{
+ *   stdin.removeAllListeners();
+ *   },3000)
+ */
+
+process.stdin.on('end',()=>{
+    process.exit();
+
 })
