@@ -175,6 +175,10 @@ html = '<!DOCTYPE html><html><head><title>img</title></head><body><img src="' + 
 http.createServer((req,res)=>{
   	res.end(html);
 }).listen(8080);
+// 这样做的意义在哪里
+/*
+如果对于一个页面有10个小图片，那么客户端需要请求多次服务器，很浪费带宽，但是如果用data uri则可以减少带宽，有助于网页的优化
+*/
 ```
 
 ### Buffer 读取位图信息
