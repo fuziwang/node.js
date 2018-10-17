@@ -9,6 +9,6 @@ function longTask(){
   }
 }
 
-console.time("test");
+console.time('test');
 longTask();
-console.timeEnd("test");
+console.timeEnd('test');

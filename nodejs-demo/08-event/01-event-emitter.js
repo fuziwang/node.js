@@ -13,5 +13,5 @@ emitter.on('bye',()=>{
   process.exit();
 });
 
-global.setInterval(()=>{emitter.emit('hello')},500);
-global.setInterval(()=>{emitter.emit('bye')},3000);
+global.setInterval(()=>{emitter.emit('hello');},500);
+global.setInterval(()=>{emitter.emit('bye');},3000);

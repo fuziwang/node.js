@@ -4,7 +4,7 @@ process.stdin.resume();
 process.stdin.setEncoding('utf-8');
 
 process.stdin.on('data',(data)=>{
-    process.stdout.write(data.toUpperCase());
+  process.stdout.write(data.toUpperCase());
 
 });
 
@@ -15,6 +15,6 @@ process.stdin.on('data',(data)=>{
  */
 
 process.stdin.on('end',()=>{
-    process.exit();
+  process.exit();
 
-})
+});

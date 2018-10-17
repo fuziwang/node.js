@@ -14,7 +14,7 @@ function Bomb(){
 
 Bomb.prototype.explode = function(){
   console.log(this.message);
-}
+};
 
 var b = new Bomb();
 

@@ -10,7 +10,7 @@ function GreenStram(){
 GreenStram.prototype._write = function(chunk,encode,cb){
   process.stdout.write('\033[1;32m' + chunk.slice(0,chunk.length-1) + '\033[1;37m');
   cb;
-}
+};
 
 util.inherits(GreenStram,Writable);
 

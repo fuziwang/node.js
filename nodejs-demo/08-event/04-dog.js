@@ -22,10 +22,10 @@ function Dog(name,energy){
   }
   this.on = (evt,fn) =>{
     if(typeof(listener[evt]) === 'undefined'){
-        listener[evt] = [];
+      listener[evt] = [];
     }
     listener[evt].push(fn);
-  }
+  };
 }
 
 module.exports = Dog;

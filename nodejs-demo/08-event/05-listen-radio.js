@@ -9,5 +9,5 @@ radio.on('play',(station)=>{
 });
 
 radio.on('stop',(station)=>{
-  console.log("%s has stoped",station.name);
+  console.log('%s has stoped',station.name);
 });

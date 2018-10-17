@@ -3,7 +3,7 @@
 const msg = ['name','email','qq','mobile'];
 
 var i = 0,
-  me = {};
+    me = {};
 console.log(msg[i] + ':');
 process.stdin.on('data',(data)=>{
   me[msg[i]] = data.slice(0,data.length-1).toString('utf-8');

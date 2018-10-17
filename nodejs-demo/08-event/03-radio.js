@@ -11,7 +11,7 @@ function Radio(station){
   },0);
   global.setTimeout(()=>{
     that.emit('stop',station);
-  },5000)
+  },5000);
 }
 
 util.inherits(Radio,EventEmitter);

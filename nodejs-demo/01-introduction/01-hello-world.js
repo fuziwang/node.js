@@ -1,3 +1,3 @@
 #!/usr/bin/node
 
-console.log("hello World");
+console.log('hello World');

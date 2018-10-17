@@ -14,7 +14,7 @@ log('buf1 content:',buf1);
 
 for(var i = 0;i<256;i++) buf1[i] = i;
 
-log("\nbuf1 new content:",buf1);
+log('\nbuf1 new content:',buf1);
 
 // buf1 可以有数组的一些方法
 
