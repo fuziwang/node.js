@@ -1,6 +1,6 @@
 #!/usr/bin/node
 
-console.log("start");
+console.log('start');
 
 const time = global.setInterval(loop,500);
 
