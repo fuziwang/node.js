@@ -11,9 +11,11 @@ for(var i = 3;i<process.argv.length;i++){
 
 cp.execFile(cmd,arg,(err,out,error)=>{
   if(err){
-    console.error(error);
+    console.error(err.message);
     process.exit(100);
   }
-
+  if(error){
+    console.log(error);
+  }
   console.log(out);
 });
