@@ -317,3 +317,224 @@ hash: #/d/e/f
 URL parse: [ '', 'a', 'b', 'c' ]
 querystring parse: { age: '20', gender: 'M' }
 ```
+#### 解析 HTTP 请求头
+
+- 使用 http 模块创建 web 服务监听 8080 端口
+- 在控制台打印完整的 http 请求头信息
+- 在控制台打印 http 请求头信息中的 User-Agent、Host 两个字段信息
+
+```javascript
+#!/usr/bin/node
+
+const http = require('http');
+
+http.createServer((req,res)=>{
+  console.log(req.headers);
+  console.log('host:',req.headers.host);
+  console.log('user-agent:',req.headers['user-agent']);// 由于存在斜杠，因此需要用[]访问对象的属性
+  res.end('OK!');
+}).listen(8080);
+```
+
+```bash
+# 程序运行结果
+## curl运行
+~ » curl http://localhost:8080                                   wangding@OFFICE
+OK%
+
+~/node.js/nodejs-demo/16-http-server(master*) » ./03-req-header-parse.js
+{ 'user-agent': 'curl/7.29.0',
+  host: 'localhost:8080',
+  accept: '*/*' }
+host: localhost:8080
+user-agent: curl/7.29.0
+## 客户端运行（Chrome浏览器）
+~/node.js/nodejs-demo/16-http-server(master*) » ./03-req-header-parse.js
+{ host: '192.168.80.144:8080',
+  connection: 'keep-alive',
+  'cache-control': 'max-age=0',
+  'upgrade-insecure-requests': '1',
+  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'accept-encoding': 'gzip, deflate',
+  'accept-language': 'zh-CN,zh;q=0.9' }
+host: 192.168.80.144:8080
+user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36
+```
+
+#### 处理 HTTP 响应
+
+- 使用 http 模块创建 web 服务监听 8080 端口
+- 当客户端请求网站根路径（/）时，发送给客户端一个 h1 格式的 hello world! 网页
+- 并且发送响应状态码 200，并且发送响应头字段列表：Content-Type: text/html 以及 Content-Length: XXX（这三个 X 表示响应体的实际字节数）
+- 当客户端请求网站其他路径时，发送状态码 404，以及 Resource not found！信息
+- 用 curl 程序测试这个 web 服务的不同 URL，查看响应起始行、响应报文头以及响应体
+
+```javascript
+#!/usr/bin/node
+
+const http = require('http');
+
+http.createServer((req,res)=>{
+  	if(req.url === '/'){
+      	var html = '<!DOCTYPE html><html><head><title>hello</title><meta charset="utf-8"/></head><body><h1>Hello World!</h1></body></html>';
+    	//res.statusCode = 200;
+    	//res.setHeader('Content-type','text/html');
+        res.writeHead(200,{
+          'Content-Type':'text/html',
+          'Content-Lenght':Buffer.byteLength(html)
+        });
+      	res.end(html);
+	}else{
+  		res.statusCode = 404;
+      	res.end('Resource not found!');
+	}
+}).listen(8080);
+```
+
+```bash
+# 程序运行结果
+~ » curl http://localhost:8080 -i                                wangding@OFFICE
+HTTP/1.1 200 OK
+Content-Type: text/html # 如果将res.setHeader('Content-type','text/plain'); 那么浏览器不会渲染
+Content-Lenght: 118
+Date: Tue, 06 Nov 2018 09:59:44 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+
+<!DOCTYPE html><html><head><title>hello</title><meta charset="utf-8"/></head><body><h1>Hello World!</h1></body></html>%
+# 上述的HTML代码在Chrome浏览器中会进行渲染
+~ » curl http://localhost:8080/a/b/c -i                                wangding@OFFICE
+HTTP/1.1 404 Not Found
+Date: Tue, 06 Nov 2018 10:00:15 GMT
+Connection: keep-alive
+Content-Length: 19
+
+Resource Not Found!%
+```
+
+#### 处理上传数据
+
+- 使用 http 模块创建 web 服务监听 8080 端口
+- 请求的 URL 不是网站根路径（/）时，提示客户端 404 错误，如果 HTTP 请求的方法不是 POST 时，提示客户端 404 错误
+- 接收客户端 HTTP POST 请求中携带的数据，将收到的数据打印到控制台上
+- 用 curl 程序测试服务程序，包括以下一些场景，用 curl 向服务程序发送 FORM 表单数据，用 curl 向服务程序发送 JSON 数据，用 curl 向服务程序上传文件
+
+```javascript
+#!/usr/bin/node
+
+const http = require('http');
+
+http.createServer((req,res)=>{
+  	if(req.url === '/' && req.method === 'POST'){
+  		res.statusCode = 404;
+      	res.end('Error!');
+	}else{
+  		console.log(req.method,req.url,'Http/' + req.httpVersion);
+      	console.log(req.headers);
+      	console.log();
+      	res.pipe(process.stdout);
+      	res.end('OK!');
+	}
+}).listen(8080);
+```
+
+```bash
+# 程序运行结果
+---------------------------------------------------------------------------
+## 前台对应结果
+~ » curl -X POST -d "name=wangding,passwd=123" http://localhost:8080 -i
+HTTP/1.1 200 OK
+Date: Tue, 06 Nov 2018 12:42:01 GMT
+Connection: keep-alive
+Content-Length: 3
+
+OK!% 
+## 后台返回数据
+POST / http/1.1
+{ 'user-agent': 'curl/7.29.0',
+  host: 'localhost:8080',
+  accept: '*/*',
+  'content-length': '24',
+  'content-type': 'application/x-www-form-urlencoded' } # 以表单提交的格式进行的，返回对应的内容
+
+name=wangding,passwd=123
+---------------------------------------------------------------------------
+## 前台对应结果
+~ » curl -X POST -d '{"name":"wangding","passwd":"123"}' http://localhost:8080 -i -H 'Content-Type:application/json'
+HTTP/1.1 200 OK
+Date: Tue, 06 Nov 2018 12:47:13 GMT
+Connection: keep-alive
+Content-Length: 3
+
+OK!%
+## 后台返回数据
+POST / http/1.1
+{ 'user-agent': 'curl/7.29.0',
+  host: 'localhost:8080',
+  accept: '*/*',
+  'content-type': 'application/json',# 以JSON数据的格式进行的，返回对应的内容
+  'content-length': '34' }
+
+{"name":"wangding","passwd":"123"}
+---------------------------------------------------------------------------
+## 前天对应结果
+~ » curl -X POST -d '<name>wangding</name><passwd>123</passwd>' http://localhost:
+8080 -i -H 'Content-Type:application/xml'
+HTTP/1.1 200 OK
+Date: Tue, 06 Nov 2018 12:43:11 GMT
+Connection: keep-alive
+Content-Length: 3
+
+OK!%
+## 后台返回数据
+POST / http/1.1
+{ 'user-agent': 'curl/7.29.0',
+  host: 'localhost:8080',
+  accept: '*/*',
+  'content-type': 'application/xml',# 以XMLN数据的格式进行的，返回对应的内容
+  'content-length': '41' }
+
+<name>wangding</name><passwd>123</passwd>
+---------------------------------------------------------------------------
+## 前台对应结果
+~ » curl -F "file=@a.txt" http://localhost:8080                  wangding@OFFICE
+OK!% 
+## 后台返回数据
+POST / http/1.1
+{ 'user-agent': 'curl/7.29.0',
+  host: 'localhost:8080',
+  accept: '*/*',
+  'content-length': '195',
+  expect: '100-continue',
+  'content-type': 'multipart/form-data; boundary=----------------------------1398e1ef0af4' }
+# multipart/form-data; 这种格式类似于一个压缩包 里面都可以有对应的文件，不同文件有不同的界限，返回为一条信息输出
+------------------------------1398e1ef0af4
+Content-Disposition: form-data; name="file"; filename="a.txt"
+Content-Type: text/plain
+
+Hello World
+
+------------------------------1398e1ef0af4--
+---------------------------------------------------------------------------
+## 前台对应结果
+~ » curl -F "file=@out.bmp" http://localhost:8080                wangding@OFFICE
+OK!%
+## 后台返回数据
+POST / http/1.1
+{ 'user-agent': 'curl/7.29.0',
+  host: 'localhost:8080',
+  accept: '*/*',
+  'content-length': '1277',
+  expect: '100-continue',
+  'content-type': 'multipart/form-data; boundary=----------------------------5a7786cfa2f9' }
+
+------------------------------5a7786cfa2f9
+Content-Disposition: form-data; name="file"; filename="out.bmp"
+Content-Type: application/octet-stream
+
+ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ
+------------------------------5a7786cfa2f9--
+```
+
+详情内容，可以参考[content-type](Content-Type.md)文件
