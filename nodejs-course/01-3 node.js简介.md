@@ -9,6 +9,11 @@ node.js 作为 JavaScript 的运行环境，包括两层含义
 + `JavaScript` 通过 `node.js` 在服务器上运行，这样 `node.js` 好像就是 `JavaScript` 的虚拟机
 + `node.js` 提供大量的 API，使 `JavaScript` 语言与操作系统互动（读写文件、创建进程）
 
+node 和 console控制台的区别：
+
++ 在console控制台中全局变量是window变量、输入process会报错
++ 在node中如果打window变量则会报错、node中的全局变量是process
+
 #### node.js API
 
 node.js API包含两个部分：全局对象和普通模块（我们学习主要学习的是node.js 的API）
@@ -93,3 +98,7 @@ http.createServer(function(req,res)=>{
 }).listen(8080);
 ```
 
+#### node.js的版本
+
+- node.js中偶数位的版本为稳定版本 `-0.6.x -0.8.x -0.10.x`
+- node.js中奇数位的版本为非稳定版本 `-0.7.x -0.9.x -0.11.x`
