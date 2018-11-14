@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO list</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>todolist</h1>
+    <form method="POST" action="/">
+      <input type="text" name="item">
+      <input type="submit" value="Add Item">
+    </form>
+    <ul>
+      <%- item.map(function(item){ return '<li>' + item +'</li>';}).join('\n') -%>
+    </ul>
+  </body>
+</html>
