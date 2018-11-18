@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>node.js聊天室</title>
+  <meta charset="utf-8"/>
+</head>
+<body>
+  <textarea id="text"></textarea>
+  <button id="btn">提交</button>
+</body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script>
+    var socket = io.connect('/');
+    // console.log(socket);
+    
+    document.getElementById("btn").onclick = function () {
+      var val = document.querySelector("#text").value;
+      //console.log(val);
+      if (!val) return;
+
+      document.querySelector("#text").value = "";
+      socket.send(val);
+    };
+    
+    socket.on("message", function (msg) {
+      var p = document.createElement("p");
+      p.innerText = msg;
+      document.body.appendChild(p);                               
+    });
+  </script>
+</html>
