@@ -94,8 +94,12 @@ Read-Eval-Print-Loop 四个单词的首字母缩写，意思是：读取-求值-
 
 var http = require('http');
 http.createServer(function(req,res)=>{
+  res.write('abc');
   res.end('hello world');
 }).listen(8080);
+
+# 执行结果
+res.write()和res.end()都会返回给浏览器
 ```
 
 #### node.js的版本
