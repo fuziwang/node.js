@@ -46,6 +46,15 @@
 
 ![](nodejs-course/images/content.png)
 
+## node.js进阶
+
++ node.js聊天室：基于socket.io（简单的多人通信）
+  + node.js搭建聊天室
+  + node.js-demo-chat
++ node.js文件上传：基于express的中间件（multer）
+  + NodeJS express+multer实现文件上传
+  + node.js-demo-file
+
 ## 联系我
 
 如果你想提出一些意见，加入我的知识原地，贡献自己的一部分力量，请联系我。
