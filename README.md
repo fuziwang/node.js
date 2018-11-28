@@ -49,11 +49,12 @@
 ## node.js进阶
 
 + node.js聊天室：基于socket.io（简单的多人通信）
-  + node.js搭建聊天室
-  + node.js-demo-chat
+  + n[ode.js搭建聊天室技术文档](https://github.com/fuziwang/node.js/blob/master/nodejs-course/Node.js%E8%81%8A%E5%A4%A9%E5%AE%A4.md)
+  + [node.js-demo-chat](https://github.com/fuziwang/node.js/tree/master/nodejs-demo/chat)
+
 + node.js文件上传：基于express的中间件（multer）
-  + NodeJS express+multer实现文件上传
-  + node.js-demo-file
+  + [NodeJS express+multer实现文件上传技术文档](https://github.com/fuziwang/node.js/blob/master/nodejs-course/NodeJS%20express%2Bmulter%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0.md)
+  + [node.js-demo-file](https://github.com/fuziwang/node.js/tree/master/nodejs-demo/file)
 
 ## 联系我
 
