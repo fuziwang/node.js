@@ -172,6 +172,17 @@ found 0 vulnerabilities
 
 ![](images/60.png)
 
+##### 开发环境支持3000端口
+
+```bash
+# 查看自己开设了哪些端口
+sudo firewall-cmd --zone=public --list-port
+
+# 在防火墙上开设3000端口
+sudo firewall-cmd --permanent --add-port=3000/tcp
+sudo firewall-cmd --reload
+```
+
 ##### 分析代码目录结构
 
 - `tree -I node_modules` 查看项目目录结构
