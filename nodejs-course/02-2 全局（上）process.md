@@ -111,6 +111,8 @@ Mandatory arguments to long options are mandatory for short options too.
 
 退出码实质上是给程序看的，在Linux程序中，有时候子进程会输出退出码，父进程通过查看子进程输出的退出码来判断是否正确
 
+在退出码中，0表示的是成功，1表示的是错误
+
 - 通过命令行参数获取程序的退出码，以该退出码退出程序
 - 通过 echo 命令查看程序的退出码
 - 对命令行参数的退出码，做数据合法性校验
@@ -202,5 +204,18 @@ const pid = process.argv[2];
 const sig = process.argv[3];
 
 process.kill(pid,sig);
+
+## 程序运行结果
+~/node.js-demo/04-process » ./05-my-kill.js SIGTSTP 3311        wangding@OFFICE
+------------------------------------------------------------
+~/node.js-demo/04-process » ./05-my-kill.js SIGTSTP 3311        wangding@OFFICE
+------------------------------------------------------------
+~/node.js-demo/04-process » ./05-my-kill.js SIGINT 3311
+
+~/node.js-demo/04-process » ./05-signal.js                        wangding@OFFICE
+3311
+ctrl + z
+ctrl + z
+ctrl + c
 ```
 
